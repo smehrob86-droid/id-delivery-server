@@ -18,7 +18,6 @@ couriers = {}
 @app.route("/courier/register", methods=["POST"])
 def register_courier():
     data = request.json
-
     courier_id = str(data["id"])
 
     couriers[courier_id] = {
@@ -27,10 +26,9 @@ def register_courier():
         "status": "offline"
     }
 
-        return jsonify({
+    return jsonify({
         "message": "Курьер зарегистрирован"
     })
-
 @app.route("/courier/status", methods=["POST"])
 def courier_status():
     data = request.json

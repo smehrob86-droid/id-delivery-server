@@ -18,6 +18,7 @@ couriers = {}
 @app.route("/courier/register", methods=["POST"])
 def register_courier():
     data = request.json
+
     courier_id = str(data["id"])
 
     couriers[courier_id] = {
@@ -29,15 +30,43 @@ def register_courier():
     return jsonify({
         "message": "Курьер зарегистрирован"
     })
+
+
 @app.route("/courier/status", methods=["POST"])
 def courier_status():
     data = request.json
+
     courier_id = str(data["id"])
 
     if courier_id in couriers:
         couriers[courier_id]["status"] = data["status"]
-        return jsonify({"message": "Статус изменён"})
-    return jsonify({"error": "Курьер не найден"}), 404
+
+        return jsonify({
+            "message": "Статус изменён"
+        })
+
+    return jsonify({
+        "error": "Курьер не найден"
+    }), 404
+
+
+orders = []
+
+@app.route("/order/create", methods=["POST"])
+def create_order():
+    data = request.json
+
+    order = {
+        "id": len(orders) + 1,
+        "client": data.get("client"),
+        "address": data.get("address"),
+        "status": "new"
+    }
+
+    orders.append(order)
+
+    return jsonify(order)
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)

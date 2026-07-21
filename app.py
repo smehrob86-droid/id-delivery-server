@@ -27,9 +27,19 @@ def register_courier():
         "status": "offline"
     }
 
-    return jsonify({
+        return jsonify({
         "message": "Курьер зарегистрирован"
     })
+
+@app.route("/courier/status", methods=["POST"])
+def courier_status():
+    data = request.json
+    courier_id = str(data["id"])
+
+    if courier_id in couriers:
+        couriers[courier_id]["status"] = data["status"]
+        return jsonify({"message": "Статус изменён"})
+    return jsonify({"error": "Курьер не найден"}), 404
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)

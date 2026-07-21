@@ -2,10 +2,14 @@ from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
+
+# Главная страница
 @app.route("/")
 def home():
     return "ID Delivery server работает!"
 
+
+# Проверка сервера
 @app.route("/test")
 def test():
     return jsonify({
@@ -13,8 +17,12 @@ def test():
         "message": "Сервер готов"
     })
 
+
+# Курьеры
 couriers = {}
 
+
+# Регистрация курьера
 @app.route("/courier/register", methods=["POST"])
 def register_courier():
     data = request.json
@@ -32,6 +40,7 @@ def register_courier():
     })
 
 
+# Изменение статуса курьера
 @app.route("/courier/status", methods=["POST"])
 def courier_status():
     data = request.json
@@ -50,8 +59,11 @@ def courier_status():
     }), 404
 
 
+# Заказы
 orders = []
 
+
+# Создание заказа
 @app.route("/order/create", methods=["POST"])
 def create_order():
     data = request.json
@@ -68,5 +80,6 @@ def create_order():
     return jsonify(order)
 
 
+# Запуск сервера
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
